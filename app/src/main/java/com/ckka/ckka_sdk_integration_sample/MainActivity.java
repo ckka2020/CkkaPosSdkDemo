@@ -3,6 +3,7 @@ package com.ckka.ckka_sdk_integration_sample;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Toast;
@@ -16,15 +17,17 @@ import org.json.JSONObject;
 public class MainActivity extends AppCompatActivity implements OnCkkaActionListener {
     CkkaSdk ckkaSdk;
     double totalAmount;
+    Activity mContext;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        mContext = this;
+        ckkaSdk = new CkkaSdk(this);
         findViewById(R.id.txtSend).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 totalAmount = 100.50;
-                ckkaSdk = CkkaSdk.getInstance(MainActivity.this);
                 ckkaSdk.sendDataToCkka(
                         /*<YOUR POS-ID HERE>*/ getPOSid(),
                         /*<YOUR TOTAL AMOUNT HERE>*/ totalAmount,
@@ -46,23 +49,17 @@ public class MainActivity extends AppCompatActivity implements OnCkkaActionListe
      */
     private String getJsonCartInfo()
     {
-        JSONObject jsonObject = null;
-        try {
-            jsonObject = new JSONObject("{\"Apple\":\"1kg\",\"Banana\":\"6nos\",\"Orange\":5kg,\n" +
-                    "\"Potato\":\"20kg\",\"Mango\":\"5kg\"}");
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        return jsonObject.toString();
+        String jsonString = "{\"bill_id\":\"5e4574996d5f4958bef10052\",\"products\":[{\"product_code\":\"01\",\"description\":\"item-1\",\"qty\":5,\"unitRate\":1,\"amount\":5},{\"product_code\":\"02\",\"description\":\"item-2\",\"qty\":5,\"unitRate\":1,\"amount\":5}],\"gross_total\":10,\"sales_tax\":0,\"net_total\":10}";
+        return jsonString;
     }
 
     @Override
-    public void onSuccess(String message) {
-        Toast.makeText(this, message, Toast.LENGTH_LONG).show();
+    public void onSuccess(String ack_id, String message) {
+        Toast.makeText(mContext, "AckId: "+ack_id+ "\nMsg: "+ message, Toast.LENGTH_LONG).show();
     }
 
     @Override
     public void onFailure(String message) {
-        Toast.makeText(this, message, Toast.LENGTH_LONG).show();
+        Toast.makeText(mContext, message, Toast.LENGTH_LONG).show();
     }
 }
