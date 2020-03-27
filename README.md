@@ -56,6 +56,17 @@ If your application does not behave properly then make sure it is enabled in you
   
 Internet permission is required for making api calls to CKKA. It is automatically included as part of the library. 
 
+  **Default interface methods are only supported starting with Android N**
+
+        android {
+        ...
+          compileOptions {
+                sourceCompatibility JavaVersion.VERSION_1_8
+                targetCompatibility JavaVersion.VERSION_1_8
+            }
+        ...
+        }
+
   **Usage with SDK**
 
     Step 1. Get instance of CkkaSdk
