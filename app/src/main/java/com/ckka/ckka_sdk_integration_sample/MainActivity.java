@@ -40,8 +40,8 @@ public class MainActivity extends AppCompatActivity implements OnCkkaActionListe
     private String getPOSid()
     {
         /*eg. */
-//        return "5e731afe6d5f11169bef15e9";
-        return "<YOUR POS-ID HERE>";
+        return "5e731afe6d5f11169bef15e9";
+//        return "<YOUR POS-ID HERE>";
     }
 
     /*  Your cart details or whatever info you want to share
